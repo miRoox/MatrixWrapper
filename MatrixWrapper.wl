@@ -3,8 +3,11 @@
 BeginPackage["MatrixWrapper`"]
 
 
-Mat::usage="Mat@data treat data as a matrix."
-MatQ::uasge="MatQ[expr] check whether expr is a correct Mat type matrix."
+Mat::usage="Mat@data treat data as a matrix.
+Mat@\"Column\"@data treat data as a column matrix.
+Mat@\"Row\"@data treat data as a row matrix."
+MatQ::usage="MatQ[expr] check whether expr is a correct Mat type matrix."
+MatData::usage="MatData[mat] get raw data of Mat type matrix."
 
 
 Begin["`Private`"]
@@ -19,8 +22,16 @@ scalerQ[expr_]:=NumericQ[expr]||MatchQ[expr,_Symbol]
 MatQ[expr_]:=MatchQ[expr,Mat[_?strictMatrixQ]]
 
 
+MatData[Mat[data_]]:=data
+
+
 Mat[{{scaler_?scalerQ}}]:=scaler
 Mat[scaler_?scalerQ]:=scaler
+
+
+Mat[vec_?VectorQ]:=Mat["Column"[vec]]
+Mat["Column"[col_?VectorQ]]:=Mat[{col}//Transpose]
+Mat["Row"[row_?VectorQ]]:=Mat[{row}]
 
 
 Mat/:Exp[Mat[data_]]:=Mat@MatrixExp[data]
@@ -38,7 +49,7 @@ Mat/:Abs[Mat[data_]]:=Mat@Abs[data]
 Mat/:Tr[Mat[data_]]:=Tr[data]
 Mat/:Det[Mat[data_]]:=Det[data]
 Mat/:Permanent[Mat[data_]]:=Permanent[data]
-Mat/:f_[Mat[data_]]:=Mat@f[data]
+(*Mat/:f_[Mat[data_]]:=Mat@f[data]*)
 
 
 End[]
