@@ -19,7 +19,7 @@ Begin["`Private`"]
 strictMatrixQ[list_]:=ArrayQ[list,2]
 
 
-scalerQ[expr_]:=NumericQ[expr]||MatchQ[expr,_Symbol]
+scalerQ[expr_]:=!(ListQ[expr]||ArrayQ[expr]||MatchQ[expr,_Mat])
 
 
 MatQ[expr_]:=MatchQ[expr,Mat[_?strictMatrixQ]]
@@ -47,7 +47,6 @@ Mat/:Permanent[Mat[data_]]:=Permanent[data]
 
 
 Mat[{{scaler_?scalerQ}}]:=scaler
-Mat[scaler_?scalerQ]:=scaler
 
 
 Mat[vec_?VectorQ]:=Mat["Column"[vec]]
