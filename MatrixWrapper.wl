@@ -28,22 +28,22 @@ MatQ[expr_]:=MatchQ[expr,Mat[_?strictMatrixQ]]
 MatData[Mat[data_]]:=data
 
 
-Mat/:Exp[Mat[data_]]:=Mat@MatrixExp[data]
-Mat/:Log[Mat[data_]]:=Mat@MatrixLog[data]
-Mat/:Power[Mat[data_],-1]:=Mat@Inverse[data]
-Mat/:Power[Mat[data_],n_?scalerQ]:=Mat@MatrixPower[data,n]
-Mat/:f_Symbol[Mat[data_]]/;MemberQ[Attributes[f],NumericFunction]:=Mat@MatrixFunction[f,data]
-(*Mat/:f_Function[Mat[data_]]*)
+Mat/:Exp[mat_Mat]:=Mat@MatrixExp@MatData[mat]
+Mat/:Log[mat_Mat]:=Mat@MatrixLog@MatData[mat]
+Mat/:Power[mat_Mat,-1]:=Mat@Inverse@MatData[mat]
+Mat/:Power[mat_Mat,n_?scalerQ]:=Mat@MatrixPower[MatData[mat],n]
+Mat/:f_Symbol[mat_Mat]/;MemberQ[Attributes[f],NumericFunction]:=Mat@MatrixFunction[f,MatData[mat]]
+(*Mat/:f_Function[mat_Mat]*)
 
 
-Mat/:Transpose[Mat[data_]]:=Mat@Transpose[data]
-Mat/:Conjugate[Mat[data_]]:=Mat@Conjugate[data]
-Mat/:ConjugateTranspose[Mat[data_]]:=Mat@ConjugateTranspose[data]
-Mat/:Abs[Mat[data_]]:=Mat@Abs[data]
-Mat/:Tr[Mat[data_]]:=Tr[data]
-Mat/:Det[Mat[data_]]:=Det[data]
-Mat/:Permanent[Mat[data_]]:=Permanent[data]
-(*Mat/:f_[Mat[data_]]:=Mat@f[data]*)
+Mat/:Transpose[mat_Mat]:=Mat@Transpose@MatData[mat]
+Mat/:Conjugate[mat_Mat]:=Mat@Conjugate@MatData[mat]
+Mat/:ConjugateTranspose[mat_Mat]:=Mat@ConjugateTranspose@MatData[mat]
+Mat/:Abs[mat_Mat]:=Mat@Abs@MatData[mat]
+Mat/:Tr[mat_Mat]:=Tr@MatData[mat]
+Mat/:Det[mat_Mat]:=Det@MatData[mat]
+Mat/:Permanent[mat_Mat]:=Permanent@MatData[mat]
+(*Mat/:f_[mat_Mat]:=Mat@f[data]*)
 
 
 Mat[{{scaler_?scalerQ}}]:=scaler
