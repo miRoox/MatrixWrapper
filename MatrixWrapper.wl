@@ -10,6 +10,9 @@ MatQ::usage="MatQ[expr] check whether expr is a correct Mat type matrix."
 MatData::usage="MatData[mat] get raw data of Mat type matrix."
 
 
+Mat::invdat="Format of `1` is invalid for Mat."
+
+
 Begin["`Private`"]
 
 
@@ -23,15 +26,6 @@ MatQ[expr_]:=MatchQ[expr,Mat[_?strictMatrixQ]]
 
 
 MatData[Mat[data_]]:=data
-
-
-Mat[{{scaler_?scalerQ}}]:=scaler
-Mat[scaler_?scalerQ]:=scaler
-
-
-Mat[vec_?VectorQ]:=Mat["Column"[vec]]
-Mat["Column"[col_?VectorQ]]:=Mat[{col}//Transpose]
-Mat["Row"[row_?VectorQ]]:=Mat[{row}]
 
 
 Mat/:Exp[Mat[data_]]:=Mat@MatrixExp[data]
@@ -50,6 +44,26 @@ Mat/:Tr[Mat[data_]]:=Tr[data]
 Mat/:Det[Mat[data_]]:=Det[data]
 Mat/:Permanent[Mat[data_]]:=Permanent[data]
 (*Mat/:f_[Mat[data_]]:=Mat@f[data]*)
+
+
+Mat[{{scaler_?scalerQ}}]:=scaler
+Mat[scaler_?scalerQ]:=scaler
+
+
+Mat[vec_?VectorQ]:=Mat["Column"[vec]]
+Mat["Column"[col_?VectorQ]]:=Mat[{col}//Transpose]
+Mat["Row"[row_?VectorQ]]:=Mat[{row}]
+
+
+Mat[data_/;MemberQ[data,_Mat,Infinity]]:=Mat[data/.{Mat->Identity}]
+
+
+Mat[array_/;!strictMatrixQ[array]]:=With[{flat=ArrayFlatten[array]},
+  If[TrueQ@strictMatrixQ[flat],
+    Mat[flat],
+    Message[Mat::invdat,array];$Failed
+  ]
+]
 
 
 End[]
