@@ -1,6 +1,14 @@
 (* ::Package:: *)
 
+(* ::Title:: *)
+(*MatrixWrapper*)
+
+
 BeginPackage["MatrixWrapper`"]
+
+
+(* ::Section:: *)
+(*Interface*)
 
 
 Mat::usage="Mat@data treat data as a matrix.
@@ -19,7 +27,15 @@ Mat::invdat="Format of `1` is invalid for Mat."
 Options[MatrixFunctor]=Options[MatrixFunction]
 
 
+(* ::Section::Closed:: *)
+(*Implement*)
+
+
 Begin["`Private`"]
+
+
+(* ::Subsection::Closed:: *)
+(*Utilities*)
 
 
 strictMatrixQ[list_,Verbatim[_]]:=ArrayQ[list,2]
@@ -43,6 +59,10 @@ MatrixFunctor[f_,opts:OptionsPattern[]][m_Mat]:=Mat[MatrixFunction[f,MatData@m,o
 MatrixFunctor[f_,opts:OptionsPattern[]][m_]:=MatrixFunction[f,m,opts]
 
 
+(* ::Subsection::Closed:: *)
+(*Unary*)
+
+
 Mat/:Exp[mat_Mat]:=Mat[MatrixExp@MatData@mat,MatElementsPattern@mat]
 Mat/:Log[mat_Mat]:=Mat[MatrixLog@MatData@mat,MatElementsPattern@mat]
 Mat/:Power[mat_Mat,-1]:=Mat[Inverse@MatData@mat,MatElementsPattern@mat]
@@ -59,6 +79,10 @@ Mat/:Tr[mat_Mat]:=Tr@MatData@mat
 Mat/:Det[mat_Mat]:=Det@MatData@mat
 Mat/:Permanent[mat_Mat]:=Permanent@MatData@mat
 (*Mat/:f_[mat_Mat]:=Mat@f[data]*)
+
+
+(* ::Subsection::Closed:: *)
+(*Mat*)
 
 
 Mat[data_]:=Mat[data,_]
@@ -81,6 +105,10 @@ Mat[array_,patt_]/;!strictMatrixQ[array,patt]:=With[{flat=ArrayFlatten[array]},
     Message[Mat::invdat,array];$Failed
   ]
 ]
+
+
+(* ::Section::Closed:: *)
+(*End*)
 
 
 End[]
