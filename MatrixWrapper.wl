@@ -10,9 +10,13 @@ Mat[data,patt] suppose every element in data matches patt."
 MatQ::usage="MatQ[expr] check whether expr is a correct Mat type matrix."
 MatData::usage="MatData[mat] get raw data of Mat type matrix."
 MatElementsPattern::usage="MatElementsPattern[mat] get elements pattern of mat."
+MatrixFunctor::usage="MatrixFunctor[f] give the matrix form of a scaler function f."
 
 
 Mat::invdat="Format of `1` is invalid for Mat."
+
+
+Options[MatrixFunctor]=Options[MatrixFunction]
 
 
 Begin["`Private`"]
@@ -33,6 +37,10 @@ MatData[Mat[data_,_]]:=data
 
 
 MatElementsPattern[Mat[_,patt_]]:=patt
+
+
+MatrixFunctor[f_,opts:OptionsPattern[]][m_Mat]:=Mat[MatrixFunction[f,MatData@m,opts],MatElementsPattern@m]
+MatrixFunctor[f_,opts:OptionsPattern[]][m_]:=MatrixFunction[f,m,opts]
 
 
 Mat/:Exp[mat_Mat]:=Mat[MatrixExp@MatData@mat,MatElementsPattern@mat]
