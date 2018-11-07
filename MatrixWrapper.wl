@@ -7,6 +7,10 @@
 BeginPackage["MatrixWrapper`"]
 
 
+Unprotect[`Mat]
+ClearAll[`Mat]
+
+
 (* ::Section:: *)
 (*Interface*)
 
@@ -27,7 +31,7 @@ Mat::invdat="Format of `1` is invalid for Mat."
 Options[MatrixFunctor]=Options[MatrixFunction]
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Implement*)
 
 
@@ -79,6 +83,15 @@ Mat/:Tr[mat_Mat]:=Tr@MatData@mat
 Mat/:Det[mat_Mat]:=Det@MatData@mat
 Mat/:Permanent[mat_Mat]:=Permanent@MatData@mat
 (*Mat/:f_[mat_Mat]:=Mat@f[data]*)
+
+
+(* ::Subsection:: *)
+(*Index*)
+
+
+mat_Mat[index__]:=With[{indexlist=Replace[{index},{i_Integer:>i;;i},{1}]},
+    Mat[mat[[1,Sequence@@indexlist]],MatElementsPattern[mat]]
+  ]
 
 
 (* ::Subsection::Closed:: *)
@@ -136,6 +149,9 @@ Mat[array_,patt_]/;!strictMatrixQ[array,patt]:=With[{flat=ArrayFlatten[array]},
 
 
 End[]
+
+
+Protect[`Mat]
 
 
 EndPackage[]
