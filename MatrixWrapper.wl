@@ -85,7 +85,7 @@ Mat/:Permanent[mat_Mat]:=Permanent@MatData@mat
 (*Mat/:f_[mat_Mat]:=Mat@f[data]*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Index*)
 
 
@@ -136,7 +136,7 @@ Mat["Row"[row_?VectorQ],patt_]:=Mat[{row},patt]
 Mat[data_/;MemberQ[data,_Mat,Infinity],patt_]:=Mat[data/.{mat_Mat:>MatData@mat},patt]
 
 
-Mat[array_,patt_]/;!strictMatrixQ[array,patt]:=With[{flat=ArrayFlatten[array]},
+Mat[array_,patt_]/;!strictMatrixQ[array,patt]:=With[{flat=Quiet[ArrayFlatten[array],{ArrayFlatten::depth}]},
   If[TrueQ@strictMatrixQ[flat,patt],
     Mat[flat,patt],
     Message[Mat::invdat,array];$Failed
