@@ -82,6 +82,30 @@ Mat/:Permanent[mat_Mat]:=Permanent@MatData@mat
 
 
 (* ::Subsection::Closed:: *)
+(*Format*)
+
+
+Mat/:MakeBoxes[Mat[data_,Verbatim[_]],StandardForm]:=
+  With[{databox=Map[ToBoxes,data,{2}]},
+    TemplateBox[{GridBox[databox]},"Mat",
+      DisplayFunction:>(RowBox[{"(",#1,")"}]&),
+      InterpretationFunction:>(RowBox[{"Mat","[",#1,",","_","]"}]&),
+      Tooltip->Automatic
+    ]
+  ]
+
+
+Mat/:MakeBoxes[Mat[data_,patt_],StandardForm]:=
+  With[{databox=Map[ToBoxes,data,{2}],pattbox=MakeBoxes[patt]},
+    TemplateBox[{GridBox[databox],pattbox},"Mat",
+      DisplayFunction:>(SubscriptBox[RowBox[{"(",#1,")"}],
+          TemplateBox[{#2,Background->RGBColor[0.87,0.94,1],RoundingRadius->5,FrameStyle->GrayLevel[0.5]},"Highlighted"]]&),
+      Tooltip->Automatic
+    ]
+  ]
+
+
+(* ::Subsection::Closed:: *)
 (*Mat*)
 
 
