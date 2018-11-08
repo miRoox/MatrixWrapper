@@ -1,5 +1,7 @@
 BeginTestSection["Tests"]
 
+BeginTestSection["Construct"]
+
 VerificationTest[(* 1 *)
 	Mat[List[List[1]]]
 	,
@@ -112,6 +114,10 @@ VerificationTest[(* 13 *)
 	TestID->"PatternConstraint_5"
 ]
 
+EndTestSection[]
+
+BeginTestSection["Format"]
+
 VerificationTest[(* 14 *)
 	ToExpression[TemplateBox[List[GridBox[List[List["1", "2"], List["3", "4"]]]], "Mat", RuleDelayed[DisplayFunction, Function[RowBox[List["(", Slot[1], ")"]]]], RuleDelayed[InterpretationFunction, Function[RowBox[List["Mat", "[", Slot[1], ",", "_", "]"]]]], Rule[Tooltip, Automatic]]]
 	,
@@ -135,5 +141,7 @@ VerificationTest[(* 16 *)
 	,
 	TestID->"Format_3"
 ]
+
+EndTestSection[]
 
 EndTestSection[]
