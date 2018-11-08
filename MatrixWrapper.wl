@@ -23,6 +23,7 @@ MatQ::usage="MatQ[expr] check whether expr is a correct Mat type matrix."
 MatData::usage="MatData[mat] get raw data of Mat type matrix."
 MatElementsPattern::usage="MatElementsPattern[mat] get elements pattern of mat."
 MatrixFunctor::usage="MatrixFunctor[f] give the matrix form of a scaler function f."
+RemoveMatrixWrapperPackage::usage="RemoveMatrixWrapperPackage[] remove this package."
 
 
 Mat::invdat="Format of `1` is invalid for Mat."
@@ -145,6 +146,16 @@ Mat[array_,patt_]/;!strictMatrixQ[array,patt]:=
       invalidDataMsg[array,patt];$Failed
     ]
   ]
+
+
+(* ::Subsection::Closed:: *)
+(*Remove Package*)
+
+
+RemoveMatrixWrapperPackage[]:=(
+  Unprotect[MatrixWrapper`Mat];
+  Remove["MatrixWrapper`*"]
+  )
 
 
 (* ::Section::Closed:: *)
