@@ -124,7 +124,7 @@ Mat/:MakeBoxes[Mat[data_,patt_],StandardForm]:=
 
 
 (* ::Subsection::Closed:: *)
-(*Mat*)
+(*Constructor*)
 
 
 Mat[data_]:=Mat[data,_]
