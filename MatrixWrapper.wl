@@ -26,6 +26,7 @@ MatrixFunctor::usage="MatrixFunctor[f] give the matrix form of a scaler function
 
 
 Mat::invdat="Format of `1` is invalid for Mat."
+Mat::invdat2="Format of `1` is invalid for Mat with pattern constraint `2`."
 
 
 Options[MatrixFunctor]=Options[MatrixFunction]
@@ -48,6 +49,10 @@ strictMatrixQ[patt_][list_]:=strictMatrixQ[list,patt]
 
 
 scalerQ[expr_]:=!(ListQ[expr]||ArrayQ[expr]||MatchQ[expr,_Mat])
+
+
+invalidDataMsg[data_,Verbatim[_]]:=Message[Mat::invdat,data]
+invalidDataMsg[data_,patt_]:=Message[Mat::invdat2,data,patt]
 
 
 MatQ[expr_]:=MatchQ[expr,Mat[_?(strictMatrixQ@MatElementsPattern@expr)]]
@@ -125,7 +130,7 @@ Mat/:MakeBoxes[Mat[data_,patt_],StandardForm]:=
 Mat[data_]:=Mat[data,_]
 
 
-Mat[{{scaler_?scalerQ}},patt_]:=If[MatchQ[scaler,patt],scaler,Message[Mat::invdat,{{scaler}}];$Failed]
+Mat[{{scaler_?scalerQ}},patt_]:=If[MatchQ[scaler,patt],scaler,invalidDataMsg[{{scaler}},patt];$Failed]
 
 
 Mat[vec_?VectorQ,patt_]:=Mat["Column"[vec],patt]
@@ -139,7 +144,7 @@ Mat[data_/;MemberQ[data,_Mat,Infinity],patt_]:=Mat[data/.{mat_Mat:>MatData@mat},
 Mat[array_,patt_]/;!strictMatrixQ[array,patt]:=With[{flat=Quiet[ArrayFlatten[array],{ArrayFlatten::depth}]},
   If[TrueQ@strictMatrixQ[flat,patt],
     Mat[flat,patt],
-    Message[Mat::invdat,array];$Failed
+    invalidDataMsg[array,patt];$Failed
   ]
 ]
 
