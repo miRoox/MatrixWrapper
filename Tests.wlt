@@ -112,4 +112,28 @@ VerificationTest[(* 13 *)
 	TestID->"PatternConstraint_5"
 ]
 
+VerificationTest[(* 14 *)
+	ToExpression[TemplateBox[List[GridBox[List[List["1", "2"], List["3", "4"]]]], "Mat", RuleDelayed[DisplayFunction, Function[RowBox[List["(", Slot[1], ")"]]]], RuleDelayed[InterpretationFunction, Function[RowBox[List["Mat", "[", Slot[1], ",", "_", "]"]]]], Rule[Tooltip, Automatic]]]
+	,
+	Mat[List[List[1, 2], List[3, 4]], Blank[]]	
+	,
+	TestID->"Format_1"
+]
+
+VerificationTest[(* 15 *)
+	ToExpression[TemplateBox[List[GridBox[List[List["1", "2"], List["3", "4"]]], "_"], "Mat", RuleDelayed[DisplayFunction, Function[SubscriptBox[RowBox[List["(", Slot[1], ")"]], FrameBox[Slot[2], Rule[RoundingRadius, 5], Rule[Background, RGBColor[0.87`, 0.94`, 1]], Rule[FrameStyle, GrayLevel[0.5`]], Rule[StripOnInput, False]]]]], RuleDelayed[InterpretationFunction, Function[RowBox[List["Mat", "[", Slot[1], ",", Slot[2], "]"]]]], Rule[Tooltip, Automatic]]]
+	,
+	Mat[List[List[1, 2], List[3, 4]], Blank[]]	
+	,
+	TestID->"Format_2"
+]
+
+VerificationTest[(* 16 *)
+	ToExpression[TemplateBox[List[GridBox[List[List["1", "2"], List["3", "4"]]], "_Integer"], "Mat", RuleDelayed[DisplayFunction, Function[SubscriptBox[RowBox[List["(", Slot[1], ")"]], FrameBox[Slot[2], Rule[RoundingRadius, 5], Rule[Background, RGBColor[0.87`, 0.94`, 1]], Rule[FrameStyle, GrayLevel[0.5`]], Rule[StripOnInput, False]]]]], RuleDelayed[InterpretationFunction, Function[RowBox[List["Mat", "[", Slot[1], ",", Slot[2], "]"]]]], Rule[Tooltip, Automatic]]]
+	,
+	Mat[List[List[1, 2], List[3, 4]], Blank[Integer]]	
+	,
+	TestID->"Format_3"
+]
+
 EndTestSection[]
