@@ -118,7 +118,8 @@ Mat/:MakeBoxes[Mat[data_,patt_],StandardForm]:=
   With[{databox=Map[ToBoxes,data,{2}],pattbox=MakeBoxes[patt]},
     TemplateBox[{GridBox[databox],pattbox},"Mat",
       DisplayFunction:>(SubscriptBox[RowBox[{"(",#1,")"}],
-          TemplateBox[{#2,Background->RGBColor[0.87,0.94,1],RoundingRadius->5,FrameStyle->GrayLevel[0.5]},"Highlighted"]]&),
+          FrameBox[#2,RoundingRadius->5,Background->RGBColor[0.87, 0.94, 1],FrameStyle->GrayLevel[0.5],StripOnInput->False]]&),
+      InterpretationFunction:>(RowBox[{"Mat","[",#1,",",#2,"]"}]&),
       Tooltip->Automatic
     ]
   ]
