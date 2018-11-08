@@ -68,4 +68,48 @@ VerificationTest[(* 8 *)
 	TestID->"IrregularData_2"
 ]
 
+VerificationTest[(* 9 *)
+	Mat[List[List[1, 2], List[3, 4]], Blank[Real]]
+	,
+	$Failed
+	,
+	{Mat::invdat2}
+	,
+	TestID->"PatternConstraint_1"
+]
+
+VerificationTest[(* 10 *)
+	Mat[List[List[1, 2], List[3, 4]], Blank[Integer]]
+	,
+	Mat[List[List[1, 2], List[3, 4]], Blank[Integer]]	
+	,
+	TestID->"PatternConstraint_2"
+]
+
+VerificationTest[(* 11 *)
+	Mat[List[List[List[1, 2, 3], List[2, List[4, 6], 8]], List[List[3, 9], List[4]]], Blank[List]]
+	,
+	Mat[List[List[List[1, 2, 3], List[2, List[4, 6], 8]], List[List[3, 9], List[4]]], Blank[List]]	
+	,
+	TestID->"PatternConstraint_3"
+]
+
+VerificationTest[(* 12 *)
+	With[List[Set[m, Mat[List[List[1, 2], List[3, 4]]]]], Mat[List[List[m, m], List[m, m]], Blank[Mat]]]
+	,
+	Mat[List[List[Mat[List[List[1, 2], List[3, 4]], Blank[]], Mat[List[List[1, 2], List[3, 4]], Blank[]]], List[Mat[List[List[1, 2], List[3, 4]], Blank[]], Mat[List[List[1, 2], List[3, 4]], Blank[]]]], Blank[Mat]]	
+	,
+	TestID->"PatternConstraint_4"
+]
+
+VerificationTest[(* 13 *)
+	With[List[Set[m, Mat[List[List[1, 2], List[3, 4]]]]], Mat[List[List[m, m], List[m, m]], Blank[List]]]
+	,
+	$Failed
+	,
+	{Mat::invdat2}
+	,
+	TestID->"PatternConstraint_5"
+]
+
 EndTestSection[]

@@ -43,12 +43,12 @@ Begin["`Private`"]
 (*Utilities*)
 
 
-strictMatrixQ[list_,Verbatim[_]]:=ArrayQ[list,2]
+scalerQ[expr_]:=!(ListQ[expr]||ArrayQ[expr]||MatchQ[expr,_Mat])
+
+
+strictMatrixQ[list_,Verbatim[_]]:=ArrayQ[list,2,scalerQ]
 strictMatrixQ[list_,patt_]:=ArrayQ[list,2,MatchQ[patt]]
 strictMatrixQ[patt_][list_]:=strictMatrixQ[list,patt]
-
-
-scalerQ[expr_]:=!(ListQ[expr]||ArrayQ[expr]||MatchQ[expr,_Mat])
 
 
 invalidDataMsg[data_,Verbatim[_]]:=Message[Mat::invdat,data]
@@ -138,15 +138,13 @@ Mat["Column"[col_?VectorQ],patt_]:=Mat[{col}//Transpose,patt]
 Mat["Row"[row_?VectorQ],patt_]:=Mat[{row},patt]
 
 
-Mat[data_/;MemberQ[data,_Mat,Infinity],patt_]:=Mat[data/.{mat_Mat:>MatData@mat},patt]
-
-
-Mat[array_,patt_]/;!strictMatrixQ[array,patt]:=With[{flat=Quiet[ArrayFlatten[array],{ArrayFlatten::depth}]},
-  If[TrueQ@strictMatrixQ[flat,patt],
-    Mat[flat,patt],
-    invalidDataMsg[array,patt];$Failed
+Mat[array_,patt_]/;!strictMatrixQ[array,patt]:=
+  With[{flat=Quiet[ArrayFlatten[array/.{mat_Mat:>MatData@mat}],{ArrayFlatten::depth}]},
+    If[TrueQ@strictMatrixQ[flat,patt],
+      Mat[flat,patt],
+      invalidDataMsg[array,patt];$Failed
+    ]
   ]
-]
 
 
 (* ::Section::Closed:: *)
