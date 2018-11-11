@@ -123,9 +123,12 @@ Mat/:Permanent[mat_Mat]:=Permanent@MatData@mat
 (*Index*)
 
 
-mat_Mat[index__]:=With[{indexlist=Replace[{index},{i_Integer:>i;;i},{1}]},
-    Mat[mat[[1,Sequence@@indexlist]],MatElementsPattern[mat]]
-  ]
+Mat/:mat_Mat[[i_]]:=mat[[i,All]]
+Mat/:mat_Mat[[i_Integer,j_]]:=mat[[i;;i,j]]
+Mat/:mat_Mat[[i_,j_Integer]]:=mat[[i,j;;j]]
+Mat/:mat_Mat[[i_Integer,j_Integer]]:=mat[[i;;i,j;;j]]
+Mat/:mat_Mat[[i_,j_]]:=Mat[MatData[mat][[i,j]],MatElementsPattern[mat]]
+(*Mat/:mat_Mat[[i_,j_,rest__]]:=mat[[i,j]][[rest]]*)
 
 
 (* ::Subsection::Closed:: *)
@@ -160,7 +163,8 @@ Mat/:MakeBoxes[Mat[data_,patt_],StandardForm]:=
 Mat[data_]:=Mat[data,_]
 
 
-Mat[{{scaler_?scalerQ}},patt_]:=If[MatchQ[scaler,patt],scaler,invalidDataMsg[{{scaler}},patt];$Failed]
+Mat[{{scaler_}},Verbatim[_]]:=If[scalerQ[scaler],scaler,invalidDataMsg[{{scaler}},patt];$Failed]
+Mat[{{scaler_}},patt_]:=If[MatchQ[scaler,patt],scaler,invalidDataMsg[{{scaler}},patt];$Failed]
 
 
 Mat[vec_?VectorQ,patt_]:=Mat["Column"[vec],patt]
