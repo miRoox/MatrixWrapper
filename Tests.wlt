@@ -79,6 +79,16 @@ VerificationTest[(* 9 *)
 ]
 
 VerificationTest[(* 10 *)
+	Mat[List[List[List[1, 2]]]]
+	,
+	$Failed
+	,
+	{Mat::invdat}
+	,
+	TestID->"IrregularData_3"
+]
+
+VerificationTest[(* 11 *)
 	Mat[List[List[1, 2], List[3, 4]], Blank[Real]]
 	,
 	$Failed
@@ -88,7 +98,7 @@ VerificationTest[(* 10 *)
 	TestID->"PatternConstraint_1"
 ]
 
-VerificationTest[(* 11 *)
+VerificationTest[(* 12 *)
 	Mat[List[List[1, 2], List[3, 4]], Blank[Integer]]
 	,
 	Mat[List[List[1, 2], List[3, 4]], Blank[Integer]]	
@@ -96,7 +106,7 @@ VerificationTest[(* 11 *)
 	TestID->"PatternConstraint_2"
 ]
 
-VerificationTest[(* 12 *)
+VerificationTest[(* 13 *)
 	Mat[List[List[List[1, 2, 3], List[2, List[4, 6], 8]], List[List[3, 9], List[4]]], Blank[List]]
 	,
 	Mat[List[List[List[1, 2, 3], List[2, List[4, 6], 8]], List[List[3, 9], List[4]]], Blank[List]]	
@@ -104,7 +114,7 @@ VerificationTest[(* 12 *)
 	TestID->"PatternConstraint_3"
 ]
 
-VerificationTest[(* 13 *)
+VerificationTest[(* 14 *)
 	With[List[Set[m, Mat[List[List[1, 2], List[3, 4]]]]], Mat[List[List[m, m], List[m, m]], Blank[Mat]]]
 	,
 	Mat[List[List[Mat[List[List[1, 2], List[3, 4]], Blank[]], Mat[List[List[1, 2], List[3, 4]], Blank[]]], List[Mat[List[List[1, 2], List[3, 4]], Blank[]], Mat[List[List[1, 2], List[3, 4]], Blank[]]]], Blank[Mat]]	
@@ -112,7 +122,7 @@ VerificationTest[(* 13 *)
 	TestID->"PatternConstraint_4"
 ]
 
-VerificationTest[(* 14 *)
+VerificationTest[(* 15 *)
 	With[List[Set[m, Mat[List[List[1, 2], List[3, 4]]]]], Mat[List[List[m, m], List[m, m]], Blank[List]]]
 	,
 	$Failed
@@ -126,7 +136,7 @@ EndTestSection[]
 
 BeginTestSection["Format"]
 
-VerificationTest[(* 15 *)
+VerificationTest[(* 16 *)
 	ToExpression[TemplateBox[List[GridBox[List[List["1", "2"], List["3", "4"]]]], "Mat", RuleDelayed[DisplayFunction, Function[RowBox[List["(", Slot[1], ")"]]]], RuleDelayed[InterpretationFunction, Function[RowBox[List["Mat", "[", Slot[1], ",", "_", "]"]]]], Rule[Tooltip, Automatic]]]
 	,
 	Mat[List[List[1, 2], List[3, 4]], Blank[]]	
@@ -134,7 +144,7 @@ VerificationTest[(* 15 *)
 	TestID->"Format_1"
 ]
 
-VerificationTest[(* 16 *)
+VerificationTest[(* 17 *)
 	ToExpression[TemplateBox[List[GridBox[List[List["1", "2"], List["3", "4"]]], "_"], "Mat", RuleDelayed[DisplayFunction, Function[SubscriptBox[RowBox[List["(", Slot[1], ")"]], FrameBox[Slot[2], Rule[RoundingRadius, 5], Rule[Background, RGBColor[0.87`, 0.94`, 1]], Rule[FrameStyle, GrayLevel[0.5`]], Rule[StripOnInput, False]]]]], RuleDelayed[InterpretationFunction, Function[RowBox[List["Mat", "[", Slot[1], ",", Slot[2], "]"]]]], Rule[Tooltip, Automatic]]]
 	,
 	Mat[List[List[1, 2], List[3, 4]], Blank[]]	
@@ -142,7 +152,7 @@ VerificationTest[(* 16 *)
 	TestID->"Format_2"
 ]
 
-VerificationTest[(* 17 *)
+VerificationTest[(* 18 *)
 	ToExpression[TemplateBox[List[GridBox[List[List["1", "2"], List["3", "4"]]], "_Integer"], "Mat", RuleDelayed[DisplayFunction, Function[SubscriptBox[RowBox[List["(", Slot[1], ")"]], FrameBox[Slot[2], Rule[RoundingRadius, 5], Rule[Background, RGBColor[0.87`, 0.94`, 1]], Rule[FrameStyle, GrayLevel[0.5`]], Rule[StripOnInput, False]]]]], RuleDelayed[InterpretationFunction, Function[RowBox[List["Mat", "[", Slot[1], ",", Slot[2], "]"]]]], Rule[Tooltip, Automatic]]]
 	,
 	Mat[List[List[1, 2], List[3, 4]], Blank[Integer]]	

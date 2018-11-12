@@ -163,7 +163,7 @@ Mat/:MakeBoxes[Mat[data_,patt_],StandardForm]:=
 Mat[data_]:=Mat[data,_]
 
 
-Mat[{{scaler_}},Verbatim[_]]:=If[scalerQ[scaler],scaler,invalidDataMsg[{{scaler}},patt];$Failed]
+Mat[{{scaler_}},Verbatim[_]]:=If[scalerQ[scaler],scaler,invalidDataMsg[{{scaler}},_];$Failed]
 Mat[{{scaler_}},patt_]:=If[MatchQ[scaler,patt],scaler,invalidDataMsg[{{scaler}},patt];$Failed]
 
 
