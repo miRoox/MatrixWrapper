@@ -128,7 +128,7 @@ Mat/:mat_Mat[[i_Integer,j_]]:=mat[[i;;i,j]]
 Mat/:mat_Mat[[i_,j_Integer]]:=mat[[i,j;;j]]
 Mat/:mat_Mat[[i_Integer,j_Integer]]:=mat[[i;;i,j;;j]]
 Mat/:mat_Mat[[i_,j_]]:=Mat[MatData[mat][[i,j]],MatElementsPattern[mat]]
-(*Mat/:mat_Mat[[i_,j_,rest__]]:=mat[[i,j]][[rest]]*)
+Mat/:mat_Mat[[i_,j_,rest__]]:=(Message[Part::partd,HoldForm[mat[[i,j,rest]]]];Missing["NotAvailable"])
 
 
 (* ::Subsection::Closed:: *)
