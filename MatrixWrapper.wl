@@ -93,6 +93,10 @@ MatData[Mat[data_,_]]:=data
 MatElementsPattern[Mat[_,patt_]]:=patt
 
 
+Mat/:Normal[mat_Mat]:=mat//.{any_Mat:>MatData@any}
+Mat/:MatrixForm[mat_Mat]:=MatrixForm@Normal[mat]
+
+
 MatrixFunctor[f_,opts:OptionsPattern[]][m_Mat]:=Mat[MatrixFunction[f,MatData@m,opts],MatElementsPattern@m]
 MatrixFunctor[f_,opts:OptionsPattern[]][m_]:=MatrixFunction[f,m,opts]
 
