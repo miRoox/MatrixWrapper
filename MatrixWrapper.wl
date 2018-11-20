@@ -47,7 +47,8 @@ Mat::usage="Mat@data treat data as a matrix.
 Mat@\"Column\"@data treat data as a column matrix.
 Mat@\"Row\"@data treat data as a row matrix.
 Mat[data,patt] suppose every element in data matches patt."
-MatQ::usage="MatQ[expr] check whether expr is a correct Mat type matrix."
+MatQ::usage="MatQ[expr,patt] check whether expr is a correct Mat type matrix with pattern constraint patt.
+MatQ[patt] represents an operator form of MatQ that can be applied to an expression."
 MatData::usage="MatData[mat] get raw data of Mat type matrix."
 MatElementsPattern::usage="MatElementsPattern[mat] get elements pattern of mat."
 MatrixFunctor::usage="MatrixFunctor[f] give the matrix form of a scaler function f."
@@ -72,7 +73,7 @@ Begin["`Private`"]
 (*Utilities*)
 
 
-scalerQ[expr_]:=!(ListQ[expr]||ArrayQ[expr]||MatchQ[expr,_Mat])
+scalerQ[expr_]:=!(ListQ[expr]||ArrayQ[expr])
 
 
 strictMatrixQ[list_,Verbatim[_]]:=ArrayQ[list,2,scalerQ]
@@ -84,7 +85,15 @@ invalidDataMsg[data_,Verbatim[_]]:=Message[Mat::invdat,data]
 invalidDataMsg[data_,patt_]:=Message[Mat::invdat2,data,patt]
 
 
-MatQ[expr_]:=MatchQ[expr,Mat[_?(strictMatrixQ@MatElementsPattern@expr)]]
+MatQ[expr_Mat,patt_]:=patt===MatElementsPattern[expr]
+MatQ[_,_]:=False
+MatQ[patt_][expr_]:=MatQ[expr,patt]
+
+
+Mat/:ArrayQ[_Mat]:=True
+Mat/:ArrayQ[_Mat,patt_/;MatchQ[2,patt]]:=True
+Mat/:ArrayQ[mat_Mat,patt_,test_]:=ArrayQ[MatData@mat,patt,test]
+Mat/:MatrixQ[_Mat]:=True
 
 
 MatData[Mat[data_,_]]:=data
