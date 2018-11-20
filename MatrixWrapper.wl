@@ -50,7 +50,7 @@ Mat[data,patt] suppose every element in data matches patt."
 MatQ::usage="MatQ[expr,patt] check whether expr is a correct Mat type matrix with pattern constraint patt.
 MatQ[patt] represents an operator form of MatQ that can be applied to an expression."
 MatData::usage="MatData[mat] get raw data of Mat type matrix."
-MatElementsPattern::usage="MatElementsPattern[mat] get elements pattern of mat."
+MatPatternConstraint::usage="MatPatternConstraint[mat] get pattern constraint of mat."
 MatrixFunctor::usage="MatrixFunctor[f] give the matrix form of a scaler function f."
 RemoveMatrixWrapperPackage::usage="RemoveMatrixWrapperPackage[] remove this package."
 
@@ -85,7 +85,7 @@ invalidDataMsg[data_,Verbatim[_]]:=Message[Mat::invdat,data]
 invalidDataMsg[data_,patt_]:=Message[Mat::invdat2,data,patt]
 
 
-MatQ[expr_Mat,patt_]:=patt===MatElementsPattern[expr]
+MatQ[expr_Mat,patt_]:=patt===MatPatternConstraint[expr]
 MatQ[_,_]:=False
 MatQ[patt_][expr_]:=MatQ[expr,patt]
 
@@ -99,14 +99,14 @@ Mat/:MatrixQ[_Mat]:=True
 MatData[Mat[data_,_]]:=data
 
 
-MatElementsPattern[Mat[_,patt_]]:=patt
+MatPatternConstraint[Mat[_,patt_]]:=patt
 
 
 Mat/:Normal[mat_Mat]:=mat//.{any_Mat:>MatData@any}
 Mat/:MatrixForm[mat_Mat]:=MatrixForm@Normal[mat]
 
 
-MatrixFunctor[f_,opts:OptionsPattern[]][m_Mat]:=Mat[MatrixFunction[f,MatData@m,opts],MatElementsPattern@m]
+MatrixFunctor[f_,opts:OptionsPattern[]][m_Mat]:=Mat[MatrixFunction[f,MatData@m,opts],MatPatternConstraint@m]
 MatrixFunctor[f_,opts:OptionsPattern[]][m_]:=MatrixFunction[f,m,opts]
 
 
@@ -114,18 +114,18 @@ MatrixFunctor[f_,opts:OptionsPattern[]][m_]:=MatrixFunction[f,m,opts]
 (*Unary*)
 
 
-Mat/:Exp[mat_Mat]:=Mat[MatrixExp@MatData@mat,MatElementsPattern@mat]
-Mat/:Log[mat_Mat]:=Mat[MatrixLog@MatData@mat,MatElementsPattern@mat]
-Mat/:Power[mat_Mat,-1]:=Mat[Inverse@MatData@mat,MatElementsPattern@mat]
-Mat/:Power[mat_Mat,n_?scalerQ]:=Mat[MatrixPower[MatData@mat,n],MatElementsPattern@mat]
-Mat/:f_Symbol[mat_Mat]/;MemberQ[Attributes[f],NumericFunction]:=Mat[MatrixFunction[f,MatData@mat],MatElementsPattern@mat]
+Mat/:Exp[mat_Mat]:=Mat[MatrixExp@MatData@mat,MatPatternConstraint@mat]
+Mat/:Log[mat_Mat]:=Mat[MatrixLog@MatData@mat,MatPatternConstraint@mat]
+Mat/:Power[mat_Mat,-1]:=Mat[Inverse@MatData@mat,MatPatternConstraint@mat]
+Mat/:Power[mat_Mat,n_?scalerQ]:=Mat[MatrixPower[MatData@mat,n],MatPatternConstraint@mat]
+Mat/:f_Symbol[mat_Mat]/;MemberQ[Attributes[f],NumericFunction]:=Mat[MatrixFunction[f,MatData@mat],MatPatternConstraint@mat]
 (*Mat/:f_Function[mat_Mat]*)
 
 
-Mat/:Transpose[mat_Mat]:=Mat[Transpose@MatData@mat,MatElementsPattern@mat]
-Mat/:Conjugate[mat_Mat]:=Mat[Conjugate@MatData@mat,MatElementsPattern@mat]
-Mat/:ConjugateTranspose[mat_Mat]:=Mat[ConjugateTranspose@MatData@mat,MatElementsPattern@mat]
-Mat/:Abs[mat_Mat]:=Mat[Abs@MatData@mat,MatElementsPattern@mat]
+Mat/:Transpose[mat_Mat]:=Mat[Transpose@MatData@mat,MatPatternConstraint@mat]
+Mat/:Conjugate[mat_Mat]:=Mat[Conjugate@MatData@mat,MatPatternConstraint@mat]
+Mat/:ConjugateTranspose[mat_Mat]:=Mat[ConjugateTranspose@MatData@mat,MatPatternConstraint@mat]
+Mat/:Abs[mat_Mat]:=Mat[Abs@MatData@mat,MatPatternConstraint@mat]
 Mat/:Tr[mat_Mat]:=Tr@MatData@mat
 Mat/:Det[mat_Mat]:=Det@MatData@mat
 Mat/:Permanent[mat_Mat]:=Permanent@MatData@mat
@@ -140,7 +140,7 @@ Mat/:mat_Mat[[i_]]:=mat[[i,All]]
 Mat/:mat_Mat[[i_Integer,j_]]:=mat[[i;;i,j]]
 Mat/:mat_Mat[[i_,j_Integer]]:=mat[[i,j;;j]]
 Mat/:mat_Mat[[i_Integer,j_Integer]]:=mat[[i;;i,j;;j]]
-Mat/:mat_Mat[[i_,j_]]:=Mat[MatData[mat][[i,j]],MatElementsPattern[mat]]
+Mat/:mat_Mat[[i_,j_]]:=Mat[MatData[mat][[i,j]],MatPatternConstraint[mat]]
 Mat/:mat_Mat[[i_,j_,rest__]]:=(Message[Part::partd,HoldForm[mat[[i,j,rest]]]];Missing["NotAvailable"])
 
 
